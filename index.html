@@ -10,189 +10,192 @@
     <title>Wynew Photobooth</title>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
 
         body {
             background-color: rgb(39, 42, 56);
             background-image: radial-gradient(#555b70 1px, transparent 1px);
-            font-family: "Space Grotesk", sans-serif;
             background-size: 20px 20px;
+            font-family: "Space Grotesk", sans-serif;
 
-            margin: 0px;
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            width: 100%;
+            padding: 14px clamp(16px, 5vw, 50px);
+
+            border-bottom: 5px solid white;
+            background-color: #FF6B6B;
+            box-shadow: 0 10px 0 0 #000;
+        }
+
+        #title {
+            color: white;
+            margin: 0;
+            font-size: clamp(1.4rem, 5vw, 2rem);
         }
 
         #mainContainer {
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
             align-items: flex-start;
             gap: 30px;
-            margin-top: 30px;
-        }
 
-        #camera {
-            background-color: #f9f9f9;
-
-            align-items: center;
-            height: 532px;
-            width: 710px;
-
-            transform: scaleX(-1);
-
-            border: solid;
-            border-width: 5px;
-            border-color: white;
-
-            margin-bottom: 30px;
-
-            box-shadow: -10px 10px 0 0 #000;
+            padding: 40px 16px 30px;
         }
 
         #cameraContainer {
             display: flex;
             flex-direction: column;
-            justify-self: center;
             align-items: center;
+
+            flex: 0 1 710px;
+            width: 100%;
+            max-width: 710px;
+            min-width: 0;
+        }
+
+        #cameraFrame {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
+
+            background-color: #f9f9f9;
+            border: 5px solid white;
+            box-shadow: 10px 10px 0 0 #000;
+
+            margin-bottom: 30px;
+        }
+
+        #camera {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1);
+        }
+
+
+        #btnContainer {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            width: 100%;
         }
 
         .cameraBTN {
-            width: 130px;
-            height: 40px;
+            width: 100%;
+            min-height: 44px;
 
-            border: solid;
-            border-width: 3px;
-            border-color: white;
-
+            border: 3px solid white;
             box-shadow: 5px 5px 0 0 #fefefe;
 
+            font-family: inherit;
+            font-size: 0.95rem;
             font-weight: bolder;
+            color: #000;
+            cursor: pointer;
+            touch-action: manipulation;
 
-            transition:
-                background-color 150ms ease-in,
-                transform 150ms ease-in;
-
-            margin-bottom: 10px;
+            transition: transform 150ms ease-in;
+            margin-bottom: 5px;
         }
 
-        .cameraBTN:hover {
+        .cameraBTN:active {
             transform: scale(0.95);
         }
 
-        #btnContainer {
-            display: flex;
-            flex-direction: row;
-
-            width: 580px;
-
-            justify-content: space-around;
-        }
-
-        .photo img {
-            margin: 0px;
-            padding: 0px;
-
-            width: 200px;
-            height: 140px;
-
-            object-fit: cover;
+        @media (hover: hover) {
+            .cameraBTN:hover {
+                transform: scale(0.95);
+            }
         }
 
         #photoGrid {
-            width: 200px;
+            width: 240px;
+            max-width: 100%;
+            min-height: 170px;
 
             display: grid;
             grid-template-columns: 1fr;
+            gap: 15px;
+            align-content: start;
 
             background-color: #B8A9FA;
-
             padding: 15px;
 
-            min-height: 170px;
-
-            border: solid;
-            border-width: 5px;
-            border-color: white;
+            border: 5px solid white;
+            box-shadow: 10px 10px 0 0 #000;
 
             margin-bottom: 30px;
-
-            box-shadow: 10px 10px 0 0 #000;
         }
 
-        #title {
-            color: white;   
-            margin-left: 50px;
-        }
-
-        header{
-            display: flex;
-            
+        .photo img {
+            display: block;
             width: 100%;
-            height: 70px;
-            
-            margin: 0px;
-
-            border: solid;
-            border-width: 0px;
-            border-bottom-width: 5px;
-            border-color: white;
-
-            margin-top: -20px;
-
-            background-color: #FF6B6B;
-            box-shadow: 0 10px 0 0 #000;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
         }
+        
+        @media (max-width: 600px) {
+            #mainContainer {
+                padding-top: 28px;
+                gap: 20px;
+            }
 
+            #cameraFrame {
+                box-shadow: 6px 6px 0 0 #000;
+                margin-bottom: 22px;
+            }
+
+            #btnContainer {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .cameraBTN {
+                box-shadow: 4px 4px 0 0 #fefefe;
+            }
+
+            #photoGrid {
+                box-shadow: 6px 6px 0 0 #000;
+            }
+        }
     </style>
 </head>
-
 <body>
-
     <header>
         <h1 id="title">Wynew Photobooth</h1>
     </header>
-
     <div id="mainContainer">
-
         <div id="cameraContainer">
-
-            <video
-                src=""
-                id="camera"
-                autoplay>
-            </video>
-
+            <div id="cameraFrame">
+                <video id="camera" autoplay playsinline muted></video>
+            </div>
             <div id="btnContainer">
-
-                <button
-                    style="background-color: #FF6B6B;"
-                    id="showCamera"
-                    class="cameraBTN">
+                <button style="background-color: #FF6B6B;" id="showCamera" class="cameraBTN">
                     Show Camera
                 </button>
 
-                <button
-                    style="background-color: #FFD23F;"
-                    id="captureBtn"
-                    class="cameraBTN">
+                <button style="background-color: #FFD23F;" id="captureBtn" class="cameraBTN">
                     Capture
                 </button>
 
-                <button
-                    style="background-color: #74B9FF;"
-                    id="downloadBtn"
-                    class="cameraBTN">
+                <button style="background-color: #74B9FF;" id="downloadBtn" class="cameraBTN">
                     Download
                 </button>
 
-                <button
-                    style="background-color: #88D498;"
-                    id="resetBtn"
-                    class="cameraBTN">
+                <button style="background-color: #88D498;" id="resetBtn" class="cameraBTN">
                     Reset
                 </button>
-
             </div>
-
         </div>
-
         <div id="photoGrid"></div>
 
     </div>
@@ -206,19 +209,43 @@
         const downloadBtn = document.getElementById('downloadBtn');
         const resetBtn = document.getElementById('resetBtn');
 
+        const MAX_PHOTOS = 4;
+        const SHOT_W = 800;
+        const SHOT_H = 600;
+
+        const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+
         async function showCamera() {
 
-            await navigator.mediaDevices.getUserMedia({ video: true })
-                .then(stream => {
-                    camera.srcObject = stream;
-                })
-                .catch(error => {
-                    console.error("There is an error accessing the camera.");
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                alert("Camera is not available. Open this page over HTTPS in a supported browser.");
+                return;
+            }
+
+            if (camera.srcObject) {
+                camera.srcObject.getTracks().forEach(track => track.stop());
+            }
+
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        facingMode: "user",
+                        width: { ideal: 1280 },
+                        height: { ideal: 960 }
+                    }
                 });
+
+                camera.srcObject = stream;
+                await camera.play().catch(() => {});
+
+            } catch (error) {
+                console.error("There is an error accessing the camera.", error);
+                alert("Could not access the camera. Please allow camera permission and try again.");
+            }
 
         }
 
-        showBtn.addEventListener('click', () => showCamera());
+        showBtn.addEventListener('click', showCamera);
 
         capture.addEventListener('click', () => {
 
@@ -229,189 +256,130 @@
 
             const videoTrack = camera.srcObject.getVideoTracks()[0];
 
-            if (!videoTrack || videoTrack.readyState !== "live") {
+            if (!videoTrack || videoTrack.readyState !== "live" || !camera.videoWidth) {
                 alert("Please open the camera first.");
                 return;
             }
 
-            const currentPhotos =
-                document.querySelectorAll('.photo img');
-
-            if (currentPhotos.length >= 4) {
+            if (document.querySelectorAll('.photo img').length >= MAX_PHOTOS) {
                 alert("You can only capture 4 photos.");
                 return;
             }
+            
+            const vw = camera.videoWidth;
+            const vh = camera.videoHeight;
+            const targetRatio = SHOT_W / SHOT_H;
 
-            var canvas = document.createElement("canvas");
-            var context = canvas.getContext("2d");
+            let sx = 0, sy = 0, sw = vw, sh = vh;
 
-            canvas.width = camera.videoWidth;
-            canvas.height = camera.videoHeight;
+            if (vw / vh > targetRatio) {
+                sw = vh * targetRatio;
+                sx = (vw - sw) / 2;
+            } else {
+                sh = vw / targetRatio;
+                sy = (vh - sh) / 2;
+            }
 
-            context.translate(canvas.width, 0);
+            const canvas = document.createElement("canvas");
+            canvas.width = SHOT_W;
+            canvas.height = SHOT_H;
+
+            const context = canvas.getContext("2d");
+
+            context.translate(SHOT_W, 0);
             context.scale(-1, 1);
+            context.drawImage(camera, sx, sy, sw, sh, 0, 0, SHOT_W, SHOT_H);
 
-            context.drawImage(
-                camera,
-                0,
-                0,
-                canvas.width,
-                canvas.height
-            );
-
-            var dataURL = canvas.toDataURL("image/png");
-
-            var photoDiv = document.createElement("div");
+            const photoDiv = document.createElement("div");
             photoDiv.classList.add("photo");
 
-            var img = document.createElement("img");
-            img.src = dataURL;
+            const img = document.createElement("img");
+            img.src = canvas.toDataURL("image/png");
 
             photoDiv.appendChild(img);
             photoGrid.appendChild(photoDiv);
 
         });
 
-        downloadBtn.addEventListener('click', () => {
+        downloadBtn.addEventListener('click', async () => {
 
-        const photos =
-            document.querySelectorAll('.photo img');
-    
-        if (photos.length === 0) {
-            return;
-        }
-    
-        // Higher-resolution output
-        const scale = 2;
-    
-        const photoWidth = 200;
-        const photoHeight = 140;
-    
-        const padding = 15;
-        const gap = 15;
-        const border = 5;
-    
-        const gridWidth =
-            (photoWidth +
-            (padding * 2) +
-            (border * 2)) * scale;
-    
-        const gridHeight =
-            (
-                (photoHeight * photos.length) +
-                (gap * (photos.length - 1)) +
-                (padding * 2) +
-                (border * 2)
-            ) * scale;
-    
-        const canvas = document.createElement("canvas");
-        const context = canvas.getContext("2d");
-    
-        canvas.width = gridWidth;
-        canvas.height = gridHeight;
-    
-        // Scale everything up
-        context.scale(scale, scale);
-    
-        const normalWidth =
-            photoWidth +
-            (padding * 2) +
-            (border * 2);
-    
-        const normalHeight =
-            (photoHeight * photos.length) +
-            (gap * (photos.length - 1)) +
-            (padding * 2) +
-            (border * 2);
-    
-        // Background
-        context.fillStyle = "#B8A9FA";
-    
-        context.fillRect(
-            0,
-            0,
-            normalWidth,
-            normalHeight
-        );
-    
-        // White border
-        context.strokeStyle = "white";
-        context.lineWidth = border;
-    
-        context.strokeRect(
-            border / 2,
-            border / 2,
-            normalWidth - border,
-            normalHeight - border
-        );
-    
-        photos.forEach((img, index) => {
-    
-            const x = padding + border;
-    
-            const y =
-                padding +
-                border +
-                index * (photoHeight + gap);
-    
-            const imgRatio =
-                img.naturalWidth / img.naturalHeight;
-    
-            const boxRatio =
-                photoWidth / photoHeight;
-    
-            let drawWidth;
-            let drawHeight;
-            let drawX;
-            let drawY;
-    
-            if (imgRatio > boxRatio) {
-    
-                drawWidth = photoWidth;
-                drawHeight =
-                    photoWidth / imgRatio;
-    
-                drawX = x;
-    
-                drawY =
-                    y +
-                    (photoHeight - drawHeight) / 2;
-    
-            } else {
-    
-                drawHeight = photoHeight;
-    
-                drawWidth =
-                    photoHeight * imgRatio;
-    
-                drawX =
-                    x +
-                    (photoWidth - drawWidth) / 2;
-    
-                drawY = y;
+            const photos = document.querySelectorAll('.photo img');
+
+            if (photos.length === 0) {
+                return;
             }
-    
-            context.drawImage(
-                img,
-                drawX,
-                drawY,
-                drawWidth,
-                drawHeight
-            );
-    
+
+            const S = 3;
+            const PW = 200 * S;      
+            const PH = 150 * S;      
+            const PAD = 15 * S;      
+            const GAP = 15 * S;     
+            const B = 5 * S;        
+            const width = PW + (PAD * 2) + (B * 2);
+            const height =
+                (PH * photos.length) +
+                (GAP * (photos.length - 1)) +
+                (PAD * 2) + (B * 2);
+
+            const canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
+
+            const context = canvas.getContext("2d");
+
+            // Background
+            context.fillStyle = "#B8A9FA";
+            context.fillRect(0, 0, width, height);
+
+            // White border
+            context.strokeStyle = "white";
+            context.lineWidth = B;
+            context.strokeRect(B / 2, B / 2, width - B, height - B);
+
+            // Photos
+            photos.forEach((img, index) => {
+                const x = PAD + B;
+                const y = PAD + B + index * (PH + GAP);
+                context.drawImage(img, x, y, PW, PH);
+            });
+
+            const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
+
+            if (!blob) {
+                alert("Could not create the image. Please try again.");
+                return;
+            }
+
+            const file = new File([blob], "captured-photos.png", { type: "image/png" });
+
+            if (isTouchDevice && navigator.canShare && navigator.canShare({ files: [file] })) {
+                try {
+                    await navigator.share({ files: [file] });
+                    return;
+                } catch (error) {
+                    if (error.name === "AbortError") return;
+                }
+            }
+
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+
+            link.download = "captured-photos.png";
+            link.href = url;
+
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+
         });
-    
-        const link = document.createElement("a");
-    
-        link.download = "captured-photos.png";
-    
-        link.href = canvas.toDataURL("image/png");
-    
-        link.click();
-    });
+
         resetBtn.addEventListener('click', () => {
             photoGrid.innerHTML = "";
         });
+
     </script>
+
 </body>
 </html>
